@@ -1,0 +1,21 @@
+---
+title: "Graph2.1"
+output: html_document
+date: "2024-01-25"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+setwd = "C:/Users/Amartya Kumar Sinha/OneDrive - The University of Chicago/Miscellaneous/Personal/AdvIllinois_Analysis/GraphsToReplicate/Graph 2.1"
+```
+```{r}
+library(readxl)
+
+pin25to64 <- read_excel("pinc-03_25to64_FTYrRound.xlsx")
+pin65above <- read_excel("pinc-03_65above_FTYrRound.xlsx")
+
+print(pin25to64)
+```
