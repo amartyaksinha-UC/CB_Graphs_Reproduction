@@ -1,0 +1,101 @@
+---
+title: "Table 2.14"
+author: "Aishwarya Sivaramakrishnan"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(forcats)
+```
+
+```{r}
+setwd("C:/Users/Aishwarya S/OneDrive - The University of Chicago/Advance Illinois/GraphsToReplicate/ACS_Data/Table2.14") 
+```
+
+```{r}
+pppub21 <- read.csv("pppub21.csv")
+```
+
+```{r}
+# Filter for Illinois, age, full-time employment, and relevant sectors
+illinois_data <- pppub21 %>%
+  filter(A_AGE > 24,
+         A_WKSTAT %in% c(2,3),
+         PRCOW1 %in% c(1, 2, 3, 4),
+         GESTFIPS == 17)
+```
+
+
+```{r}
+# Categorize the employment sector
+illinois_data <- illinois_data %>%
+  mutate(sector = case_when(
+    PRCOW1 %in% c(1, 2, 3) ~ "Federal, State, and Local Governments",
+    PRCOW1 == 4            ~ "Private"
+  ))
+```
+
+```{r}
+# Categorize the education levels
+illinois_data <- illinois_data %>%
+  mutate(education_level = case_when(
+    A_HGA %in% 31:38 ~ "Less than a High School Diploma",
+    A_HGA == 39      ~ "High School Diploma",
+    A_HGA == 40      ~ "Some College, No Degree",
+    A_HGA %in% 41:42 ~ "Associate Degree",
+    A_HGA == 43      ~ "Bachelor's Degree",
+    A_HGA %in% 44:46 ~ "Advanced Degree"
+  ))
+```
+
+```{r}
+# Filter out entries which are not included in the pension plan data
+illinois_data <- illinois_data %>%
+  filter(PENPLAN != 0)
+```
+
+```{r}
+# Calculate the percentage of individuals offered a pension plan by sector and education level
+percentage_data <- illinois_data %>%
+  group_by(sector, education_level) %>%
+  summarise(offered_count = sum(PENPLAN == 1, na.rm = TRUE),
+            total_count = n()) %>%
+  mutate(percentage_offered = (offered_count / total_count) * 100)
+```
+
+```{r}
+# Ensure the education level is ordered properly
+percentage_data$education_level <- factor(percentage_data$education_level,
+                                          levels = c("Less than a High School Diploma",
+                                                     "High School Diploma",
+                                                     "Some College, No Degree",
+                                                     "Associate Degree",
+                                                     "Bachelor's Degree",
+                                                     "Advanced Degree"))
+```
+
+```{r}
+# Plotting the graph with the necessary adjustments
+ggplot(percentage_data, aes(x = education_level, y = percentage_offered, fill = sector)) +
+  geom_bar(stat = "identity", position = position_dodge(width = 0.7), width = 0.6) +
+  scale_fill_manual(values = c("Federal, State, and Local Governments" = "blue", "Private" = "red")) +
+  scale_y_continuous(labels = scales::percent_format(), limits = c(0, 100)) + # Set limits to 0-100%
+  labs(title = "Percentage of Full-Time Year-Round Workers Age 25 and Older Offered Employer Retirement Plan",
+       subtitle = "By Sector and Education Level, Illinois, 2021",
+       x = "Education Level",
+       y = "Percentage Offered") +
+  theme_minimal() +
+  theme(legend.position = "top",
+        axis.text.x = element_text(angle = 45, hjust = 1)) +
+  geom_text(aes(label = sprintf("%0.1f%%", percentage_offered)),
+            position = position_dodge(width = 0.7),
+            vjust = -0.25,
+            size = 3)
+```
