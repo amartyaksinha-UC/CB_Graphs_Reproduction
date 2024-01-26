@@ -34,9 +34,8 @@ filtered_2.13 <- filtered_2.13 %>%
     EDUC %in% c(2:71) ~ "Less than a High School Diploma",
     EDUC == 73 ~ "High School Diploma",
     EDUC %in% c(80:81) ~ "Some College No Degree",
-    EDUC %in% c(91:92) ~ "Associate's Degree",
-    EDUC == 111 ~ "Bachelor's Degree",
-    EDUC %in% c(123:125) ~ "Advanced Degree"))
+    EDUC %in% c(91:92) ~ "Associate Degree",
+    EDUC %in% c(111, 123:125) ~ "Bachelor's degree or higher"))
 ```
 
 ```{r}
@@ -47,10 +46,35 @@ filtered_2.13 <- filtered_2.13 %>%
 ```
 
 ```{r}
-write.csv(filtered_2.13, "filtered_2.13.csv")
+# Calculating unemployment rate
+
+unemployment_rate <- filtered_2.13 %>%
+  group_by(YEAR, Education) %>%
+  summarise(UnemploymentRate = mean(Unemployment)*100, .groups = "drop") 
+
 ```
 
 ```{r}
+p <- ggplot(unemployment_rate, aes(x = YEAR, y = UnemploymentRate, color = Education)) +
+  geom_line() +
+  scale_x_continuous(breaks = seq(min(unemployment_rate$YEAR), max(unemployment_rate$YEAR), by = 2)) +
+  labs(title = "Unemployment Rate: Individuals 25 and older in Illinois by Education Level (2002 to 2022)",
+       x = "Year",
+       y = "Unemployment Rate (%)",
+       color = "Education Level") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 1), # Center the title
+        legend.position = c(0.98, 0.98), 
+        legend.justification = c(1, 1), 
+        legend.box.just = "right", 
+        legend.direction = "vertical",
+        legend.box = "vertical",
+        legend.margin = margin(4, 4, 4, 4),
+        legend.text = element_text(size = 8),
+        legend.background = element_rect(fill="white", colour="black", size=0.5))
+
+# Print the plot
+print(p)
 ```
 
 
