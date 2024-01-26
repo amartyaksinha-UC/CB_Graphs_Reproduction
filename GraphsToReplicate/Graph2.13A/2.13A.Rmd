@@ -1,0 +1,21 @@
+---
+title: "2.13A"
+output: html_document
+date: "2024-01-26"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+setwd("C:/Users/Amartya Kumar Sinha/OneDrive - The University of Chicago/Miscellaneous/Personal/AdvIllinois_Analysis/GraphsToReplicate/Graph2.13A") 
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+raw_import <- read.csv("cps_00006.csv.gz")
+```
+
+```{r}
