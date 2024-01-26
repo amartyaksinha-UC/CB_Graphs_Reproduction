@@ -28,6 +28,7 @@ filtered_2.13 <- raw_2.13 %>%
 
 ```{r}
 # Categorizing education levels
+
 filtered_2.13 <- filtered_2.13 %>%
   mutate(Education = case_when(
     EDUC %in% c(2:71) ~ "Less than a High School Diploma",
