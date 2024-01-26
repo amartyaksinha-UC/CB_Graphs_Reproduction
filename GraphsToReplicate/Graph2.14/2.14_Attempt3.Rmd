@@ -56,6 +56,10 @@ percentages <- filtered %>%
             OfferedPension = sum(PENSION %in% c(2, 3))) %>%
   ungroup() %>%
   mutate(PercentageOffered = (OfferedPension / Total) *100)
+```
+
+```{r}
+# Grouped by education level
 
 ggplot(percentages , aes(x=Education, y=PercentageOffered, fill=factor(ifelse(Private==1, "Private", "Government")))) +
   geom_bar(stat="identity", position=position_dodge(width=0.9)) +
@@ -68,8 +72,7 @@ ggplot(percentages , aes(x=Education, y=PercentageOffered, fill=factor(ifelse(Pr
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
 ```
 ```{r}
-
-# Without percentages
+# Grouped by job sector, without percentages
 
 ggplot(percentages, aes(x = Education, y = PercentageOffered, fill = factor(ifelse(Private == 1, "Private", "Government")))) +
   geom_bar(stat = "identity", position = "dodge") +
@@ -80,11 +83,11 @@ ggplot(percentages, aes(x = Education, y = PercentageOffered, fill = factor(ifel
   xlab("Education Level") +
   scale_y_continuous(limits = c(0, 100)) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
-  facet_grid(. ~ factor(ifelse(Private == 1, "Government", "Private")), scales = "free_x", space = "free_x")
-
+  facet_grid(. ~ factor(ifelse(Private == 0, "Government", "Private")), scales = "free_x", space = "free_x")
 ```
 ```{r}
-# With percentages
+# Grouped by job sector, with percentages
+
 ggplot(percentages, aes(x = Education, y = PercentageOffered, fill = factor(ifelse(Private == 1, "Private", "Government")))) +
   geom_bar(stat = "identity", position = "dodge") +
   geom_text(aes(label = sprintf("%.2f%%", PercentageOffered)),
@@ -96,6 +99,6 @@ ggplot(percentages, aes(x = Education, y = PercentageOffered, fill = factor(ifel
   xlab("Education Level") +
   scale_y_continuous(limits = c(0, 100)) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
-  facet_grid(. ~ factor(ifelse(Private == 1, "Government", "Private")), scales = "free_x", space = "free_x")
-
+  facet_grid(. ~ factor(ifelse(Private == 0, "Government", "Private")), scales = "free_x", space = "free_x")
 ```
+
