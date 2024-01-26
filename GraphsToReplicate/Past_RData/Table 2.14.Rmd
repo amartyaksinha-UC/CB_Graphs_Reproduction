@@ -16,20 +16,31 @@ library(forcats)
 ```
 
 ```{r}
-setwd("C:/Users/Aishwarya S/OneDrive - The University of Chicago/Advance Illinois/GraphsToReplicate/ACS_Data/Table2.14") 
+setwd("C:/Users/Amartya Kumar Sinha/OneDrive - The University of Chicago/Miscellaneous/Personal/AdvIllinois_Analysis/GraphsToReplicate/Past_RData") 
 ```
 
 ```{r}
-pppub21 <- read.csv("pppub21.csv")
+pppub21 <- read.csv("pppub23.csv")
+ffpub21 <- read.csv("ffpub23.csv")
+hhpub21 <- read.csv("hhpub23.csv")
 ```
 
 ```{r}
 # Filter for Illinois, age, full-time employment, and relevant sectors
-illinois_data <- pppub21 %>%
+illinois_pppub <- pppub21 %>%
   filter(A_AGE > 24,
-         A_WKSTAT %in% c(2,3),
-         PRCOW1 %in% c(1, 2, 3, 4),
-         GESTFIPS == 17)
+         A_WKSTAT %in% c(2),
+         PRCOW1 %in% c(1, 2, 3, 4))
+```
+```{r}
+print(intersect(colnames(pppub21), colnames(hhpub21)))
+```
+```{r}
+print(paste("Current memory limit: ", memory.limit(), " MB"))
+```
+
+```{r}
+illinois_data <- merge(illinois_pppub, hhpub21, by=c("FILEDATE", "YYYYMM"))
 ```
 
 

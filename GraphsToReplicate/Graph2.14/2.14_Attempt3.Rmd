@@ -1,0 +1,41 @@
+---
+title: "2.14_Attempt3"
+output: html_document
+date: "2024-01-26"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+setwd("C:/Users/Amartya Kumar Sinha/OneDrive - The University of Chicago/Miscellaneous/Personal/AdvIllinois_Analysis/GraphsToReplicate/Graph2.14") 
+library(dplyr)
+```
+
+
+```{r}
+raw_import <- read.csv("cps_00003.csv.gz")
+```
+
+```{r}
+filtered <- raw_import %>%
+  filter(AGE > 24,
+         STATEFIP == 17,
+         PENSION %in% c(1, 2, 3))
+
+```
+
+```{r}
+filtered <- filtered %>%
+  mutate(Private = ifelse(CLASSWKR == 21, 1, 0))
+
+filtered <- filtered %>%
+  mutate(Government = ifelse(CLASSWKR %in% c(25, 27, 28), 1, 0))
+```
+
+```{r}
+print(colnames(filtered))
+```
+
+
