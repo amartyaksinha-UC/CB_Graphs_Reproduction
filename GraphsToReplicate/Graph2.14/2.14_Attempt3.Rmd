@@ -11,6 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 setwd("C:/Users/Amartya Kumar Sinha/OneDrive - The University of Chicago/Miscellaneous/Personal/AdvIllinois_Analysis/GraphsToReplicate/Graph2.14") 
 library(dplyr)
+library(ggplot2)
 ```
 
 
@@ -22,7 +23,8 @@ raw_import <- read.csv("cps_00003.csv.gz")
 filtered <- raw_import %>%
   filter(AGE > 24,
          STATEFIP == 17,
-         PENSION %in% c(1, 2, 3))
+         PENSION %in% c(1, 2, 3),
+         WKSTAT%in% c(10,11,12))
 
 ```
 
@@ -35,7 +37,38 @@ filtered <- filtered %>%
 ```
 
 ```{r}
-print(colnames(filtered))
+filtered <- filtered %>%
+  mutate(Education = case_when(
+    EDUC %in% c(2:71) ~ "Less than a High School Diploma",
+    EDUC == 73 ~ "High School Diploma",
+    EDUC %in% c(80:81) ~ "Some College No Degree",
+    EDUC %in% c(91:92) ~ "Associate's Degree",
+    EDUC == 111 ~ "Bachelor's Degree",
+    EDUC %in% c(123:125) ~ "Advanced Degree"
+  ))
 ```
 
+
+```{r}
+percentages <- filtered %>%
+  group_by(Education, Private, Government) %>%
+  summarise(Total = n(),
+            OfferedPension = sum(PENSION %in% c(2, 3))) %>%
+  ungroup() %>%
+  mutate(PercentageOffered = (OfferedPension / Total) *100)
+
+ggplot(percentages , aes(x=Education, y=PercentageOffered, fill=factor(ifelse(Private==1, "Private", "Government")))) +
+  geom_bar(stat="identity", position=position_dodge(width=0.9)) +
+  labs(fill="Sector") +
+  theme_minimal() +
+  scale_fill_manual(values=c("lightblue","burlywood")) +
+  ylab("Percentage Offered") +
+  xlab("Education Level") +
+  scale_y_continuous(limits = c(0, 100)) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+```
+
+```{r}
+
+```
 
