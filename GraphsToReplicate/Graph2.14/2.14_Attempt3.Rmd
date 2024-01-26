@@ -20,15 +20,20 @@ raw_import <- read.csv("cps_00003.csv.gz")
 ```
 
 ```{r}
+# Filtered data by age, state, pension, employment status and year
+
 filtered <- raw_import %>%
   filter(AGE > 24,
          STATEFIP == 17,
          PENSION %in% c(1, 2, 3),
-         WKSTAT%in% c(10,11,12))
+         WKSTAT%in% c(10, 11),
+         YEAR == 2021)
 
 ```
 
 ```{r}
+# Added dummy variables for job types
+
 filtered <- filtered %>%
   mutate(Private = ifelse(CLASSWKR == 21, 1, 0))
 
@@ -37,6 +42,8 @@ filtered <- filtered %>%
 ```
 
 ```{r}
+# Categorizing education levels
+
 filtered <- filtered %>%
   mutate(Education = case_when(
     EDUC %in% c(2:71) ~ "Less than a High School Diploma",
@@ -50,6 +57,8 @@ filtered <- filtered %>%
 
 
 ```{r}
+# Adding calculations for pensions based on job type
+
 percentages <- filtered %>%
   group_by(Education, Private, Government) %>%
   summarise(Total = n(),

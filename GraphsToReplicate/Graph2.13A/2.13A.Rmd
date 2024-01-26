@@ -15,7 +15,45 @@ library(ggplot2)
 ```
 
 ```{r}
-raw_import <- read.csv("cps_00006.csv.gz")
+raw_2.13 <- read.csv("cps_00010.csv.gz")
 ```
 
 ```{r}
+# Filtering data by age and state
+
+filtered_2.13 <- raw_2.13 %>%
+  filter(AGE > 24,
+         STATEFIP == 17)
+```
+
+```{r}
+# Categorizing education levels
+filtered_2.13 <- filtered_2.13 %>%
+  mutate(Education = case_when(
+    EDUC %in% c(2:71) ~ "Less than a High School Diploma",
+    EDUC == 73 ~ "High School Diploma",
+    EDUC %in% c(80:81) ~ "Some College No Degree",
+    EDUC %in% c(91:92) ~ "Associate's Degree",
+    EDUC == 111 ~ "Bachelor's Degree",
+    EDUC %in% c(123:125) ~ "Advanced Degree"))
+```
+
+```{r}
+# Add dummy variable for unemployment
+
+filtered_2.13 <- filtered_2.13 %>%
+  mutate(Unemployment = ifelse(WKSTAT %in% c(50, 60), 1, 0))
+```
+
+```{r}
+write.csv(filtered_2.13, "filtered_2.13.csv")
+```
+
+```{r}
+```
+
+
+
+
+
+
