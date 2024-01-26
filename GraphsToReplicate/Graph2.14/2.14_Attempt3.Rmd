@@ -67,8 +67,35 @@ ggplot(percentages , aes(x=Education, y=PercentageOffered, fill=factor(ifelse(Pr
   scale_y_continuous(limits = c(0, 100)) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
 ```
-
 ```{r}
 
-```
+# Without percentages
 
+ggplot(percentages, aes(x = Education, y = PercentageOffered, fill = factor(ifelse(Private == 1, "Private", "Government")))) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(fill = "Sector") +
+  theme_minimal() +
+  scale_fill_manual(values = c("lightblue", "burlywood")) +
+  ylab("Percentage Offered") +
+  xlab("Education Level") +
+  scale_y_continuous(limits = c(0, 100)) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  facet_grid(. ~ factor(ifelse(Private == 1, "Government", "Private")), scales = "free_x", space = "free_x")
+
+```
+```{r}
+# With percentages
+ggplot(percentages, aes(x = Education, y = PercentageOffered, fill = factor(ifelse(Private == 1, "Private", "Government")))) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label = sprintf("%.2f%%", PercentageOffered)),
+            position = position_dodge(width = 0.9), vjust = -0.5, size = 3) +
+  labs(fill = "Sector") +
+  theme_minimal() +
+  scale_fill_manual(values = c("lightblue", "burlywood")) +
+  ylab("Percentage Offered") +
+  xlab("Education Level") +
+  scale_y_continuous(limits = c(0, 100)) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  facet_grid(. ~ factor(ifelse(Private == 1, "Government", "Private")), scales = "free_x", space = "free_x")
+
+```
