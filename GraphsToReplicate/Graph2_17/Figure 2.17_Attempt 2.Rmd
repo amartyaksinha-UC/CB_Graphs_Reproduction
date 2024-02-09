@@ -28,7 +28,9 @@ raw_import <- read.csv("usa_00004.csv.gz")
 filtered <- raw_import %>%
   filter(YEAR == 2022,
          AGE > 24,
-         STATEFIP == 17)
+         STATEFIP == 17,
+         HINSCAID == 1 | HINSCAID == 2,
+         FOODSTMP == 1 | FOODSTMP ==2)
 
 filtered <- filtered %>%
   mutate(Education = case_when(
@@ -104,10 +106,12 @@ ggplot(long_data, aes(x = Program, y = Percentage, fill = Education)) +
   geom_bar(stat = "identity", position = position_dodge(width = 0.9)) +
   geom_text(aes(label = sprintf("%.1f", Percentage)), 
             position = position_dodge(width = 0.9), 
-            vjust = -0.5, size = 3, color = "black") + # Adjust label position and appearance
+            vjust = -0.5, size = 3, color = "black") + 
   scale_fill_manual(values = education_colors) +
   labs(
-    title = "Percentage of Individuals Age 25 and Older Participating in \nPublic Assistance Programs by Education Level in Illinois, 2022",
+    title = "Percentage of Individuals Age 25 and Older\
+    Participating in Public Assistance Programs\
+    by Education Level in Illinois, 2022",
     fill = "Education Level",
     x = "",
     y = "Participation Rate (Percentage)"
@@ -119,15 +123,11 @@ ggplot(long_data, aes(x = Program, y = Percentage, fill = Education)) +
     axis.text.x = element_text(hjust = 1),
     axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0)),
     legend.position = "bottom",
-    legend.title = element_text(size = 10),
-    legend.text = element_text(size = 9)
+    legend.title = element_text(size = 7),
+    legend.text = element_text(size = 5)
   ) +
   scale_y_continuous(labels = scales::percent_format(scale = 1),
                      breaks = seq(0, 35, by = 10), 
                      limits = c(0, 35))
 ```
 
-
-```{r}
-
-```
