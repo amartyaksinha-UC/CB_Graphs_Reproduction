@@ -45,7 +45,7 @@ filtered_215A <- filtered_215A %>%
 ```
 
 ```{r}
-ins_coverage <- filtered_215A%>%
+ins_coverage_15A <- filtered_215A%>%
   group_by(Education, YEAR) %>%
   summarize(Total = n(),
     EmpInsurance = sum(PAIDGH %in% c(20,21,22)),
@@ -77,7 +77,7 @@ filtered_215A$Education <- factor(
 ```
 
 ```{r}
-ggplot(ins_coverage, aes(x = Education, y = PercentageCovered, fill = as.factor(YEAR))) +
+ggplot(ins_coverage_15A, aes(x = Education, y = PercentageCovered, fill = as.factor(YEAR))) +
   geom_bar(stat = "identity", position = position_dodge(width = 0.9)) +
   geom_text(aes(label = sprintf("%.1f", PercentageCovered)), 
             position = position_dodge(width = 0.9), 
@@ -99,4 +99,75 @@ ggplot(ins_coverage, aes(x = Education, y = PercentageCovered, fill = as.factor(
     legend.text = element_text(size = 6)
   )
 ```
+```{r}
+filtered_215B <- raw_import_215A %>%
+  filter(AGE > 24,
+         STATEFIP == 17,
+          WKSTAT%in% c(14:41))
 
+filtered_215B <- filtered_215B %>%
+ mutate(Education = case_when(
+ EDUC %in% c(2:72) ~ "Less than a Diploma",
+ EDUC == 73 ~ "High School Diploma",
+ EDUC %in% c(80:81) ~ "Some College No Degree",
+ EDUC %in% c(91:92) ~ "Associate Degree",
+ EDUC == 111 ~ "Bachelor's Degree",
+ EDUC == 123 ~ "Master's Degree",
+ EDUC == 124 ~ "Professional Degree",
+ EDUC == 125 ~ "Doctoral Degree"
+ ))
+```
+```{r}
+ins_coverage_15B <- filtered_215B%>%
+  group_by(Education, YEAR) %>%
+  summarize(Total = n(),
+    EmpInsurance = sum(PAIDGH %in% c(20,21,22)),
+    PercentageCovered = (EmpInsurance / Total) * 100)
+```
+
+```{r}
+education_colors <- c(
+  "Less than a Diploma" = "#03ADCB", 
+  "High School Diploma" = "#AAD6D4", 
+  "Some College No Degree" = "#0F6B8D", 
+  "Associate Degree" = "#C3B39E", 
+  "Bachelor's Degree" = "#F48437", 
+  "Master's Degree" = "#FFB172", 
+  "Doctoral Degree" = "#CC770B",
+  "Professional Degree" = "#C04822"
+)
+
+filtered_215B$Education <- factor(
+  filtered_215B$Education,
+  levels = c("Less than a Diploma",
+    "High School Diploma",
+    "Some College No Degree",
+    "Associate Degree",
+    "Bachelor's Degree",
+    "Master's Degree",
+    "Professional Degree",
+    "Doctoral Degree"))
+```
+```{r}
+ggplot(ins_coverage_15B, aes(x = Education, y = PercentageCovered, fill = as.factor(YEAR))) +
+  geom_bar(stat = "identity", position = position_dodge(width = 0.9)) +
+  geom_text(aes(label = sprintf("%.1f", PercentageCovered)), 
+            position = position_dodge(width = 0.9), 
+            vjust = -0.5, size = 2) + 
+  labs(
+    title = "Employer-Provided Group Health Insurance Coverage\nAmong Part-Time Year-Round Workers Age 25 and Older\nby Education Level in Illinois, 2002, 2012, and 2022",
+    fill = "Year",
+    x = "Education Level",
+    y = "Percentage Covered"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 12, face = "bold", hjust = 0.5),
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 30, hjust = 1),
+    axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0), size = 9),
+    legend.position = "bottom",
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 6)
+  )
+```
