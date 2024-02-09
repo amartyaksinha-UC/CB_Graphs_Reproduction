@@ -45,6 +45,12 @@ filtered_19A <- filtered_19A %>%
 ```
 
 ```{r}
+volunteer_rates <- filtered_19A %>%
+  group_by(SEX, Education, VLSTATUS) %>%
+  summarise(count = n()) %>%
+  mutate(volunteer_rate = ifelse(VLSTATUS == 1, count, 0) / sum(count) * 100) %>%
+  filter(VLSTATUS == 1) # Only keep volunteer entries
+
 # Convert SEX in volunteer_rates to character
 volunteer_rates$SEX <- as.character(volunteer_rates$SEX)
 
@@ -103,7 +109,9 @@ volunteer_rates_age <- filtered_19A %>%
   left_join(total_counts, by = c("AgeRange", "Education")) %>%
   mutate(volunteer_rate = ifelse(VLSTATUS == 1, count, 0) / total_count * 100) %>%
   filter(VLSTATUS == 1) # Only keep volunteer entries
+```
 
+```{r}
 # Plotting the graph
 ggplot(volunteer_rates_age, aes(x = AgeRange, y = volunteer_rate, fill = Education)) +
   geom_bar(stat = "identity", position = "dodge") +
