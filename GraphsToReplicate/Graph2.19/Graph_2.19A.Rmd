@@ -1,0 +1,122 @@
+---
+title: "Graph_2.19A"
+author: "Amartya Kumar Sinha"
+date: "2024-02-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+setwd("C:/Users/Amartya Kumar Sinha/OneDrive - The University of Chicago/Miscellaneous/Personal/AdvIllinois_Analysis/GraphsToReplicate/Graph2.19") 
+library(dplyr)
+library(ggplot2)
+library(scales)
+library(stringr)
+library(scales)
+library(tidyverse)
+library(tidyr)
+```
+
+```{r}
+raw_import_219A <- read.csv("cps_00011.csv.gz")
+```
+
+```{r}
+filtered_19A <- raw_import_219A %>%
+  filter(MONTH == 9,
+         AGE > 24,
+         VLSTATUS == 1 | VLSTATUS == 2)
+
+filtered_19A <- filtered_19A %>%
+  mutate(Education = case_when(
+    EDUC %in% c(002:071) ~ "Less than a High School Diploma",
+    EDUC == 073 ~ "High School Diploma",
+    EDUC %in% c(080:090, 100, 110, 120:122) ~ "Some College, No Degree",
+    EDUC %in% c(091:092) ~ "Associate Degree",
+    EDUC == 101 ~ "Bachelor's Degree",
+    EDUC == 123 ~ "Master's Degree",
+    EDUC == 125 ~ "Doctoral Degree",
+    EDUC == 124 ~ "Professional Degree"
+  )) %>%
+  filter(Education %in% c("Less than a High School Diploma", "High School Diploma", "Some College, No Degree", "Associate Degree", "Bachelor's Degree", "Master's Degree", "Doctoral Degree", "Professional Degree"))
+```
+
+```{r}
+# Convert SEX in volunteer_rates to character
+volunteer_rates$SEX <- as.character(volunteer_rates$SEX)
+
+# Calculate total counts for each education level
+total_counts <- filtered_19A %>%
+  group_by(Education) %>%
+  summarise(total_count = n(), .groups = "drop")
+
+# Calculate volunteering rates by education level (ignoring gender)
+volunteer_rates_all <- filtered_19A %>%
+  mutate(SEX = "All") %>% # Add a new column 'SEX' with value 'All'
+  group_by(SEX, Education, VLSTATUS) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  left_join(total_counts, by = "Education") %>%
+  mutate(volunteer_rate = ifelse(VLSTATUS == 1, count, 0) / total_count * 100) %>%
+  filter(VLSTATUS == 1) # Only keep volunteer entries
+
+# Combine the two data frames
+volunteer_rates_combined <- bind_rows(volunteer_rates, volunteer_rates_all)
+```
+
+```{r}
+# Plotting the graph
+ggplot(volunteer_rates_combined, aes(x = factor(SEX), y = volunteer_rate, fill = Education), width = 24, height = 20) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label = paste0(round(volunteer_rate, 1))), 
+            position = position_dodge(width = 1), 
+            vjust = -0.5, 
+            size = 3) +
+            labs(title = "Percentage of Individuals Age 25 and Older in Illinois Who Volunteered,
+       by Gender and Education Level, 2021",
+       x = "Gender",
+       y = "Volunteering Rate (%)",
+       fill = "Education Level") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(hjust = 1))
+
+```
+
+```{r}
+# Create a new variable for age ranges
+filtered_19A$AgeRange <- cut(filtered_19A$AGE, 
+                              breaks = c(24, 34, 54, 64, Inf), 
+                              labels = c("25-34", "35-54", "55-64", "65 and older"), 
+                              include.lowest = TRUE, 
+                              right = FALSE)
+
+# Calculate total counts for each age range and education level
+total_counts <- filtered_19A %>%
+  group_by(AgeRange, Education) %>%
+  summarise(total_count = n(), .groups = "drop")
+
+# Calculate volunteering rates by age range and education level
+volunteer_rates_age <- filtered_19A %>%
+  group_by(AgeRange, Education, VLSTATUS) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  left_join(total_counts, by = c("AgeRange", "Education")) %>%
+  mutate(volunteer_rate = ifelse(VLSTATUS == 1, count, 0) / total_count * 100) %>%
+  filter(VLSTATUS == 1) # Only keep volunteer entries
+
+# Plotting the graph
+ggplot(volunteer_rates_age, aes(x = AgeRange, y = volunteer_rate, fill = Education)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label = paste0(round(volunteer_rate, 1))), 
+            position = position_dodge(width = 1), 
+            vjust = -0.5, 
+            size = 3) +
+  labs(title = "Percentage of Individuals in Different Age Ranges Who Volunteered,
+       by Education Level, 2021",
+       x = "Age Range",
+       y = "Volunteering Rate (%)",
+       fill = "Education Level") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(hjust = 1))
+```

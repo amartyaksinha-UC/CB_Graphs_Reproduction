@@ -1,0 +1,376 @@
+Description: Data for 2.19 graphs
+Samples selected:
+      IPUMS-CPS, ASEC 2020
+            Note: 
+            Density of the full data file:  0.07%
+            Density of your extract: 0.1%
+
+      IPUMS-CPS, September 2020
+            Note: 
+            Density of the full data file:  0.01%
+            Density of your extract: 0.0%
+
+      IPUMS-CPS, ASEC 2021
+            Note: 
+            Density of the full data file:  0.01%
+            Density of your extract: 0.0%
+
+      IPUMS-CPS, September 2021
+            Note: 
+            Density of the full data file:  0.01%
+            Density of your extract: 0.0%
+
+File Type:                    rectangular
+Case Selection:               Yes
+  Variable                         Columns        Len   03/2020 09/2020 03/2021 09/2021 
+  YEAR                         H   1-4            4     X       X       X       X       
+  SERIAL                       H   5-9            5     X       X       X       X       
+  MONTH                        H  10-11           2     X       X       X       X       
+  HWTFINL                      H  12-21          10     .       X       .       X       
+  CPSID                        H  22-35          14     X       X       X       X       
+  ASECFLAG                     H  36              1     X       .       X       .       
+  ASECWTH                      H  37-47          11     X       .       X       .       
+  STATEFIP                     H  48-49           2     X       X       X       X       
+  PERNUM                       P  50-51           2     X       X       X       X       
+  WTFINL                       P  52-65          14     .       X       .       X       
+  CPSIDV                       P  66-80          15     X       X       X       X       
+  CPSIDP                       P  81-94          14     X       X       X       X       
+  ASECWT                       P  95-105         11     X       .       X       .       
+  AGE                          P 106-107          2     X       X       X       X       
+  SEX                          P 108              1     X       X       X       X       
+  EDUC                         P 109-111          3     X       X       X       X       
+  VLSTATUS                     P 112-113          2     .       .       .       X       
+
+Variable Availability Key:
+All Years X - available in this sample
+All Years . - not available in this sample
+
+Case Selections:
+H STATEFIP      17 Illinois
+P AGE      25 25
+P AGE      26 26
+P AGE      27 27
+P AGE      28 28
+P AGE      29 29
+P AGE      30 30
+P AGE      31 31
+P AGE      32 32
+P AGE      33 33
+P AGE      34 34
+P AGE      35 35
+P AGE      36 36
+P AGE      37 37
+P AGE      38 38
+P AGE      39 39
+P AGE      40 40
+P AGE      41 41
+P AGE      42 42
+P AGE      43 43
+P AGE      44 44
+P AGE      45 45
+P AGE      46 46
+P AGE      47 47
+P AGE      48 48
+P AGE      49 49
+P AGE      50 50
+P AGE      51 51
+P AGE      52 52
+P AGE      53 53
+P AGE      54 54
+P AGE      55 55
+P AGE      56 56
+P AGE      57 57
+P AGE      58 58
+P AGE      59 59
+P AGE      60 60
+P AGE      61 61
+P AGE      62 62
+P AGE      63 63
+P AGE      64 64
+P AGE      65 65
+P AGE      66 66
+P AGE      67 67
+P AGE      68 68
+P AGE      69 69
+P AGE      70 70
+P AGE      71 71
+P AGE      72 72
+P AGE      73 73
+P AGE      74 74
+P AGE      75 75
+P AGE      76 76
+P AGE      77 77
+P AGE      78 78
+P AGE      79 79
+P AGE      80 80
+P AGE      81 81
+P AGE      82 82
+P AGE      83 83
+P AGE      84 84
+P AGE      85 85
+P AGE      86 86
+P AGE      87 87
+P AGE      88 88
+P AGE      89 89
+P AGE      90 90 (90+, 1988-2002)
+P AGE      91 91
+P AGE      92 92
+P AGE      93 93
+P AGE      94 94
+P AGE      95 95
+P AGE      96 96
+P AGE      97 97
+P AGE      98 98
+P AGE      99 99+
+RECTYPE   Record type
+H         Household
+P         Person
+
+MONTH               Month
+01                  January
+02                  February
+03                  March
+04                  April
+05                  May
+06                  June
+07                  July
+08                  August
+09                  September
+10                  October
+11                  November
+12                  December
+
+ASECFLAG            Flag for ASEC
+1                   ASEC
+2                   March Basic
+
+STATEFIP            State (FIPS code)
+01                  Alabama
+02                  Alaska
+04                  Arizona
+05                  Arkansas
+06                  California
+08                  Colorado
+09                  Connecticut
+10                  Delaware
+11                  District of Columbia
+12                  Florida
+13                  Georgia
+15                  Hawaii
+16                  Idaho
+17                  Illinois
+18                  Indiana
+19                  Iowa
+20                  Kansas
+21                  Kentucky
+22                  Louisiana
+23                  Maine
+24                  Maryland
+25                  Massachusetts
+26                  Michigan
+27                  Minnesota
+28                  Mississippi
+29                  Missouri
+30                  Montana
+31                  Nebraska
+32                  Nevada
+33                  New Hampshire
+34                  New Jersey
+35                  New Mexico
+36                  New York
+37                  North Carolina
+38                  North Dakota
+39                  Ohio
+40                  Oklahoma
+41                  Oregon
+42                  Pennsylvania
+44                  Rhode Island
+45                  South Carolina
+46                  South Dakota
+47                  Tennessee
+48                  Texas
+49                  Utah
+50                  Vermont
+51                  Virginia
+53                  Washington
+54                  West Virginia
+55                  Wisconsin
+56                  Wyoming
+61                  Maine-New Hampshire-Vermont
+65                  Montana-Idaho-Wyoming
+68                  Alaska-Hawaii
+69                  Nebraska-North Dakota-South Dakota
+70                  Maine-Massachusetts-New Hampshire-Rhode Island-Vermont
+71                  Michigan-Wisconsin
+72                  Minnesota-Iowa
+73                  Nebraska-North Dakota-South Dakota-Kansas
+74                  Delaware-Virginia
+75                  North Carolina-South Carolina
+76                  Alabama-Mississippi
+77                  Arkansas-Oklahoma
+78                  Arizona-New Mexico-Colorado
+79                  Idaho-Wyoming-Utah-Montana-Nevada
+80                  Alaska-Washington-Hawaii
+81                  New Hampshire-Maine-Vermont-Rhode Island
+83                  South Carolina-Georgia
+84                  Kentucky-Tennessee
+85                  Arkansas-Louisiana-Oklahoma
+87                  Iowa-N Dakota-S Dakota-Nebraska-Kansas-Minnesota-Missouri
+88                  Washington-Oregon-Alaska-Hawaii
+89                  Montana-Wyoming-Colorado-New Mexico-Utah-Nevada-Arizona
+90                  Delaware-Maryland-Virginia-West Virginia
+99                  State not identified
+
+AGE                 Age
+00                  Under 1 year
+01                  1
+02                  2
+03                  3
+04                  4
+05                  5
+06                  6
+07                  7
+08                  8
+09                  9
+10                  10
+11                  11
+12                  12
+13                  13
+14                  14
+15                  15
+16                  16
+17                  17
+18                  18
+19                  19
+20                  20
+21                  21
+22                  22
+23                  23
+24                  24
+25                  25
+26                  26
+27                  27
+28                  28
+29                  29
+30                  30
+31                  31
+32                  32
+33                  33
+34                  34
+35                  35
+36                  36
+37                  37
+38                  38
+39                  39
+40                  40
+41                  41
+42                  42
+43                  43
+44                  44
+45                  45
+46                  46
+47                  47
+48                  48
+49                  49
+50                  50
+51                  51
+52                  52
+53                  53
+54                  54
+55                  55
+56                  56
+57                  57
+58                  58
+59                  59
+60                  60
+61                  61
+62                  62
+63                  63
+64                  64
+65                  65
+66                  66
+67                  67
+68                  68
+69                  69
+70                  70
+71                  71
+72                  72
+73                  73
+74                  74
+75                  75
+76                  76
+77                  77
+78                  78
+79                  79
+80                  80
+81                  81
+82                  82
+83                  83
+84                  84
+85                  85
+86                  86
+87                  87
+88                  88
+89                  89
+90                  90 (90+, 1988-2002)
+91                  91
+92                  92
+93                  93
+94                  94
+95                  95
+96                  96
+97                  97
+98                  98
+99                  99+
+
+SEX                 Sex
+1                   Male
+2                   Female
+9                   NIU
+
+EDUC                Educational attainment recode
+000                 NIU or no schooling
+001                 NIU or blank
+002                 None or preschool
+010                 Grades 1, 2, 3, or 4
+011                 Grade 1
+012                 Grade 2
+013                 Grade 3
+014                 Grade 4
+020                 Grades 5 or 6
+021                 Grade 5
+022                 Grade 6
+030                 Grades 7 or 8
+031                 Grade 7
+032                 Grade 8
+040                 Grade 9
+050                 Grade 10
+060                 Grade 11
+070                 Grade 12
+071                 12th grade, no diploma
+072                 12th grade, diploma unclear
+073                 High school diploma or equivalent
+080                 1 year of college
+081                 Some college but no degree
+090                 2 years of college
+091                 Associate's degree, occupational/vocational program
+092                 Associate's degree, academic program
+100                 3 years of college
+110                 4 years of college
+111                 Bachelor's degree
+120                 5+ years of college
+121                 5 years of college
+122                 6+ years of college
+123                 Master's degree
+124                 Professional school degree
+125                 Doctorate degree
+999                 Missing/Unknown
+
+VLSTATUS            Volunteer Status
+01                  Volunteer
+02                  Not a volunteer
+96                  Refused
+97                  Do not know
+98                  No response
+99                  Not in Universe
+
