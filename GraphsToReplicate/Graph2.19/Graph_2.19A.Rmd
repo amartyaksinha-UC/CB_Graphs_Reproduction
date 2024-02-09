@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-setwd("C:/Users/Amartya Kumar Sinha/OneDrive - The University of Chicago/Miscellaneous/Personal/AdvIllinois_Analysis/GraphsToReplicate/Graph2.19") 
+setwd("/cloud/project/GraphsToReplicate/Graph2.19") 
 library(dplyr)
 library(ggplot2)
 library(scales)
@@ -148,7 +148,7 @@ volunteer_rates_age <- filtered_19A %>%
 # Plotting the graph
 ggplot(volunteer_rates_age, aes(x = AgeRange, y = volunteer_rate, fill = Education)) +
   geom_bar(stat = "identity", position = "dodge") +
-  geom_text(aes(label = sprintf("%.1f", volunteer_rates_age, 1)), 
+  geom_text(aes(label = sprintf("%.1f", volunteer_rate)), 
             position = position_dodge(width = 0.9), 
             vjust = -0.5, 
             size = 2) +
