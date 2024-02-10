@@ -1,0 +1,79 @@
+---
+title: "Figure 2.18A"
+author: "Aishwarya Sivaramakrishnan"
+date: "2024-02-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+setwd("C:/Users/amart/OneDrive - The University of Chicago/IntlClimatePolicy_PPHA39930/Assignments/CB_Graphs_Reproduction/GraphsToReplicate/Graph2_17") 
+library(dplyr)
+library(ggplot2)
+library(scales)
+library(stringr)
+library(scales)
+library(tidyverse)
+library(tidyr)
+```
+
+```{r}
+raw_import_218A <- read.csv("cps_00001.csv.gz")
+```
+
+```{r}
+str(raw_import_218A)
+```
+
+
+```{r}
+filtered <- raw_import_218A %>%
+  filter(YEAR == 2022,
+         MONTH == "11",
+         AGE > 17,
+         STATEFIP == 17)
+
+filtered <- filtered %>%
+  mutate(Education = case_when(
+    EDUC %in% c(010:072) ~ "Less than a High School Diploma",
+    EDUC == 073 ~ "High School Diploma",
+    EDUC %in% c(080:090, 100, 110, 120:122) ~ "Some College, No Degree",
+    EDUC %in% c(091, 092) ~ "Associate Degree",
+    EDUC == 111 ~ "Bachelor's Degree",
+    EDUC == 123 ~ "Master's Degree",
+    EDUC == 125 ~ "Doctoral Degree",
+    EDUC == 124 ~ "Professional Degree"
+  ))
+
+filtered$AgeGroup <- cut(filtered$AGE,
+                         breaks = c(18, 24, 44, 64, 74, Inf),
+                         labels = c("18-24", "25-44", "45-64", "65-74", "75 and older"),
+                         right = FALSE)
+
+filtered <- filtered %>%
+  mutate(VotedBinary = case_when(
+    VOTED == "02" ~ 1,
+    VOTED %in% c("01", "96", "97", "98", "99") ~ 0,
+  ))
+
+voting_rates <- filtered %>%
+  group_by(AgeGroup, Education) %>%
+  summarize(VoteRate = mean(VotedBinary, na.rm = TRUE), .groups = 'drop')
+
+```
+
+```{r}
+ggplot(voting_rates, aes(x = AgeGroup, y = VoteRate, fill = Education)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(title = "Voting Rates Among Illinois Citizens, by Age and Education Level",
+       x = "Age Group",
+       y = "Voting Rate (%)") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+
+
